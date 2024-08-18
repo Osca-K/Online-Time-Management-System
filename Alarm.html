@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="AlarmStylingSheet.css">
+    <title>Alarm Page</title>
+</head>
+<body>
+<nav>
+    <ul>
+        <li><a href="Home.html">Home</a></li>
+        <li><a href="Account.html">Account</a></li>
+        <li><a href="Alarm.html">Alarm</a></li>
+        <li><a href="Stopwatch.html">Stopwatch</a></li>
+        <li><a href="Countdown.html">Countdown</a></li>
+    </ul>
+</nav>
+<div class="disk disk1"></div>
+<div class="disk disk2"></div>
+<div class="disk disk3"></div>
+
+
+
+<div class="container">
+    <section>
+        <div class="AlarmPageContainer">
+            <h2>ALARM SETTING</h2>
+            <img class="AlarmClockIcon" src="Images/AlarmClockBell2.png" alt="Alarm Image">
+            <h2>CURRENT TIME</h2>
+            <div id="currentTime"></div>
+            <h2>Set Alarm</h2>
+           
+            <form id="alarmForm">
+
+
+                <label for="tone">Select Tone:</label>
+                <input type="file" id="tone" name="tone" accept="audio/*">
+
+                <br>
+                <br>
+                <br>
+                <label for="hours">Hours:</label>
+                <input type="number" id="hours" name="hours" min="0" max="23" required>
+                <label for="minutes">Minutes:</label>
+                <input type="number" id="minutes" name="minutes" min="0" max="59" required>
+                <label for="seconds">Seconds:</label>
+                <input type="number" id="seconds" name="seconds" min="0" max="59" required>
+
+
+                <br>
+                <br>
+                <button type="button" onclick="setAlarm()">Set Alarm</button>
+                <button type="button" onclick="snooze()">Snooze</button>
+                <button type="button" onclick="resetAlarm()">Reset</button>
+                <button type="button" onclick="stopAlarm()">Stop Alarm</button>
+            </form>
+        </div>
+    </section>
+</div>
+
+
+
+
+
+<script>
+    let alarmTimeout;
+    let alarmAudio = new Audio();
+
+    function displayCurrentTime() {
+        var now = new Date();
+        var hours = now.getHours();
+        var minutes = now.getMinutes();
+        var seconds = now.getSeconds();
+        hours = padZero(hours);
+        minutes = padZero(minutes);
+        seconds = padZero(seconds);
+        var currentTime = hours + ":" + minutes + ":" + seconds;
+        document.getElementById("currentTime").textContent = currentTime;
+        setTimeout(displayCurrentTime, 1000);
+    }
+
+    function padZero(num) {
+        if (num < 10) {
+            return "0" + num;
+        }
+        return num;
+    }
+
+    function setAlarm() {
+        var hours = parseInt(document.getElementById("hours").value);
+        var minutes = parseInt(document.getElementById("minutes").value);
+        var seconds = parseInt(document.getElementById("seconds").value);
+        var tone = document.getElementById("tone").files[0];
+        if (tone) {
+            alarmAudio.src = URL.createObjectURL(tone);
+        } else {
+            alert("Please select a tone.");
+            return;
+        }
+        var now = new Date();
+        var alarmTime = new Date();
+        alarmTime.setHours(hours, minutes, seconds, 0);
+        if (alarmTime <= now) {
+            alarmTime.setDate(alarmTime.getDate() + 1);
+        }
+        var timeToAlarm = alarmTime - now;
+        clearTimeout(alarmTimeout);
+        alarmTimeout = setTimeout(() => {
+            alarmAudio.play();
+            alert("Alarm ringing!");
+        }, timeToAlarm);
+        alert("Alarm set for " + alarmTime.toLocaleTimeString());
+    }
+
+    function snooze() {
+        if (alarmAudio.paused) {
+            alert("No alarm is currently ringing.");
+        } else {
+            alarmAudio.pause();
+            setTimeout(() => {
+                alarmAudio.play();
+                alert("Snooze over. Alarm ringing again!");
+            }, 300000);
+        }
+    }
+
+    function resetAlarm() {
+        clearTimeout(alarmTimeout);
+        alarmAudio.pause();
+        alarmAudio.currentTime = 0;
+        alert("Alarm reset.");
+    }
+
+    function stopAlarm() {
+        clearTimeout(alarmTimeout);
+        alarmAudio.pause();
+        alarmAudio.currentTime = 0;
+        alert("Alarm stopped.");
+    }
+    function RotatingIcon() {
+
+    }
+
+    displayCurrentTime();
+</script>
+</body>
+</html>

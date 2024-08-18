@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="AlarmStylingSheet.css">
+    <title>Countdown Page</title>
+</head>
+<body>
+<nav>
+    <ul>
+        <li><a href="Home.html">Home</a></li>
+        <li><a href="Account.html">Account</a></li>
+        <li><a href="Alarm.html">Alarm</a></li>
+        <li><a href="Stopwatch.html">Stopwatch</a></li>
+        <li><a href="Countdown.html">Countdown</a></li>
+    </ul>
+</nav>
+
+<div class="disk disk1"></div>
+<div class="disk disk2"></div>
+<div class="disk disk3"></div>
+
+<div class="container">
+    <section>
+        <div class="CountdownPageContainer">
+            <h2>COUNTDOWN TIMER</h2>
+            <img class="CountDownIcon" src="Images/CountDownIcon_SandClock.png" alt="Countdown Image">
+
+            <br />
+            <br />
+            <br />
+            <br />
+            <form id="countdownForm">
+                <label for="countdownHours">Hours:</label>
+                <input type="number" id="countdownHours" name="countdownHours" min="0" max="23" required>
+                <label for="countdownMinutes">Minutes:</label>
+                <input type="number" id="countdownMinutes" name="countdownMinutes" min="0" max="59" required>
+                <label for="countdownSeconds">Seconds:</label>
+                <input type="number" id="countdownSeconds" name="countdownSeconds" min="0" max="59" required>
+                <br>
+                <button type="button" onclick="startCountdown()">Start</button>
+                <button type="button" onclick="pauseCountdown()">Pause</button>
+                <button type="button" onclick="resetCountdown()">Reset</button>
+            </form>
+            <br />
+            <br />
+            <div id="countdownTime">00:00:00</div>
+        </div>
+    </section>
+</div>
+
+
+<script>
+    let countdownInterval;
+    let remainingTime = 0;
+
+    function startCountdown() {
+        const hours = parseInt(document.getElementById("countdownHours").value);
+        const minutes = parseInt(document.getElementById("countdownMinutes").value);
+        const seconds = parseInt(document.getElementById("countdownSeconds").value);
+        remainingTime = (hours * 3600 + minutes * 60 + seconds) * 1000;
+        clearInterval(countdownInterval);
+        countdownInterval = setInterval(() => {
+            remainingTime -= 1000;
+            if (remainingTime <= 0) {
+                clearInterval(countdownInterval);
+                remainingTime = 0;
+                alert("Countdown finished!");
+            }
+            displayCountdownTime();
+        }, 1000);
+    }
+
+    function pauseCountdown() {
+        clearInterval(countdownInterval);
+    }
+
+    function resetCountdown() {
+        clearInterval(countdownInterval);
+        remainingTime = 0;
+        displayCountdownTime();
+    }
+
+    function displayCountdownTime() {
+        const hours = Math.floor(remainingTime / 3600000);
+        const minutes = Math.floor((remainingTime % 3600000) / 60000);
+        const seconds = Math.floor((remainingTime % 60000) / 1000);
+        document.getElementById("countdownTime").textContent = `${padZero(hours)}:${padZero(minutes)}:${padZero(seconds)}`;
+    }
+
+    function padZero(num) {
+        return num < 10 ? '0' + num : num;
+    }
+</script>
+</body>
+</html>

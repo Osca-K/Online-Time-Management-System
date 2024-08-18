@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="AlarmStylingSheet.css">
+    <title>Account Page</title>
+</head>
+<body>
+<nav>
+    <ul>
+        <li><a href="Home.html">Home</a></li>
+        <li><a href="Account.html">Account</a></li>
+        <li><a href="Alarm.html">Alarm</a></li>
+        <li><a href="Stopwatch.html">Stopwatch</a></li>
+        <li><a href="Countdown.html">Countdown</a></li>
+    </ul>
+</nav>
+
+<div class="disk disk1"></div>
+<div class="disk disk2"></div>
+<div class="disk disk3"></div>
+
+<div class="container">
+    <section class="container2">
+        <div class="AccountPageContainer">
+            <h1>SINGUP OR LOGIN</h1>
+            <img class="AccountIcon" src="Images/AccountIcon.png" alt="Account Image">
+            <div id="toggleButtons">
+                <button onclick="showForm('accountForm')">Create Account</button>
+                <button onclick="showForm('loginForm')">Login</button>
+            </div>
+            <div id="accountForm" class="form">
+                <h3>Create Account</h3>
+                <form id="signupForm">
+                    <input type="text" placeholder="Enter First Name" required><br>
+                    <input type="text" placeholder="Enter Last Name" required><br>
+                    <input type="email" placeholder="Enter Email Address" required><br>
+                    <input type="password" placeholder="Enter Password" required><br>
+                    <input type="password" placeholder="Confirm Password" required><br>
+                    <button type="submit">Signup</button>
+                </form>
+            </div>
+            <div id="loginForm" class="form" style="display:none;">
+                <h3>Login to your Alarma Account</h3>
+                <form id="loginForm">
+                    <input type="text" placeholder="Username" required><br>
+                    <input type="password" placeholder="Password" required><br>
+                    <button type="submit">Login</button>
+                    <button type="button">Forgot Password</button>
+                </form>
+            </div>
+        </div>
+    </section>
+</div>
+
+<!---Need to get replace them with th e jaccva scrip-->
+
+<script>
+    function showForm(formId) {
+        var forms = document.querySelectorAll('.form');
+        forms.forEach(form => {
+            form.style.display = 'none';
+        });
+        var selectedForm = document.getElementById(formId);
+        if (selectedForm) {
+            selectedForm.style.display = 'block';
+        }
+    }
+</script>
+</body>
+</html>
